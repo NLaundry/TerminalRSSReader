@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator db {
+    provider             = "prisma-client-py"
+    interface            = "asyncio"
+    recursive_type_depth = 5
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = "file:dev.db"
+}
+
+model Feed {
+    id         String   @id @default(uuid())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    title      String
+    link       String
+    //tags       String[] - for tags you'll need some other method like ... creating a tags model and then making a relationship
+}
+
+model Content {
+    id         String   @id @default(uuid())
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    title      String
+    link       String?
+    type       ContentType
+}
+
+
+// You'll have to create the relationships for these things
+// Created on the fly
+model FeedTag {
+    id   Int    @id @default(autoincrement())
+    name String
+}
+
+// Created on the fly
+model ContentTag {
+    id   Int    @id @default(autoincrement())
+    name String
+}
+
+// Video, Book, Article
+model ContentType {
+    id   Int    @id @default(autoincrement())
+    name String
+}
